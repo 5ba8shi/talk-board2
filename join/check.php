@@ -1,9 +1,16 @@
 <?php
 	session_start();
+	require('../dbconnect.php');
+
 	if(!isset($_SESSION['join'])){
 		header('Location: index.php');
 		exit();
 	}
+
+	$statement = $db->prepare('INSERT INTO members SET name=?,email=?, password=?, picture=?, created=NOW()');
+
+
+
 ?>
 
 <!DOCTYPE html>
