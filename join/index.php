@@ -18,15 +18,27 @@ session_start();
 			$error['password'] = 'blank';
 		}
 
+		$fileName = $_FILES['image']['name'];
+		if (!empty($fileName)) {
+			$ext = substr($fileName, -3);
+			if ($ext != 'jpg' && $ext != 'gif' && $ext != 'png') {
+				$error['image'] = 'type';
+			}
+		}
+
+
 		if (empty($error)) {
+			$image = date('YmdHis') . $_FILES['image']['name'];
+			move_uploaded_file($_FILES['image']['tmp_name'], '../member_picture/' . $image);
 			$_SESSION['join'] = $_POST;
+			$_SESSION['join']['image'] = $image;
 			header('Location: check.php');
 			exit();
 		}
 	}
 
-	if ($_REQUEST['action'] == 'rewrite') {
-
+	if ($_REQUEST['action'] == 'rewrite' && isset($_SESSION['join'])) {
+			$_POST = $_SESSION['join'];
 	}
 ?>
 
@@ -76,7 +88,7 @@ session_start();
 							<?php if ($error['password'] === 'length'): ?>
 								<p class="error">*パスワードは４文字以上にしてください</p>
 							<?php endif; ?>
-							
+
 							<?php if ($error['password'] === 'blank'): ?>
 								<p class="error">*パスワードを入力してください</p>
 							<?php endif; ?>
@@ -85,6 +97,13 @@ session_start();
 						<dt>写真など</dt>
 						<dd>
 							<input type="file" name="image" size="35" value="test"  />
+							<?php if ($error['image'] === 'type'): ?>
+								<p class="error">*写真などはgifまたはjpg、pngを指定して下さい。</p>
+							<?php endif; ?>
+							
+							<?php if (!empty($error)): ?>
+								<p class="error">*恐れ入りますが、画像を改めて指定して下さい。</p>
+							<?php endif; ?>
 						</dd>
 
 					</dl>
