@@ -24,6 +24,10 @@ session_start();
 			exit();
 		}
 	}
+
+	if ($_REQUEST['action'] == 'rewrite') {
+
+	}
 ?>
 
 <!DOCTYPE html>
@@ -60,6 +64,7 @@ session_start();
 							<?php if ($error['email'] === 'blank'): ?>
 								<p class="error">*メールアドレスを入力してください</p>
 							<?php endif; ?>
+
 							<?php if ($error['email'] === 'duplicate'): ?>
 								<p class="error">すでに登録されているメールアドレスです。</p>
 							<?php endif; ?>
@@ -71,6 +76,7 @@ session_start();
 							<?php if ($error['password'] === 'length'): ?>
 								<p class="error">*パスワードは４文字以上にしてください</p>
 							<?php endif; ?>
+							
 							<?php if ($error['password'] === 'blank'): ?>
 								<p class="error">*パスワードを入力してください</p>
 							<?php endif; ?>
@@ -87,4 +93,5 @@ session_start();
 			</div>
 		</div>
 	</body>
+
 </html>

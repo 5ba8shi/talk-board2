@@ -32,7 +32,8 @@
 						</dd>
 						<dt>メールアドレス</dt>
 						<dd>
-								</dd>
+							<?php print(htmlspecialchars($_SESSION['join']['email'], ENT_QUOTES)); ?>
+						</dd>
 						<dt>パスワード</dt>
 						<dd>
 						【表示されません】
