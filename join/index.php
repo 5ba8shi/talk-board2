@@ -1,5 +1,6 @@
 <?php
 session_start();
+require('../dbconnect.php');
 
 	if(!empty($_POST)) {
 		if ($_POST['name']=== '') {
@@ -23,6 +24,16 @@ session_start();
 			$ext = substr($fileName, -3);
 			if ($ext != 'jpg' && $ext != 'gif' && $ext != 'png') {
 				$error['image'] = 'type';
+			}
+		}
+
+		//アカウントの重複をチェック
+		if(empty($error)) {
+			$member = $db->prepare('SELECT COUNT(*) AS cnt FROM members WHERE email=?');
+			$member ->execute(array($_POST['email']));
+			$record = $member->fetch();
+			if ($record['cnt'] > 0) {
+				$error['email'] = 'duplicate';
 			}
 		}
 
