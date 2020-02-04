@@ -27,7 +27,7 @@
     }
   }
 
-  $posts = $db->query('SELECT m.name, m.picture, p.*')
+  $posts = $db->query('SELECT m.name, m.picture, p.* FROM members m, posts p WHERE m.id=p.member_id ORDER BY p.created DESC');
 ?>
 
 
