@@ -16,10 +16,18 @@
 
   if (!empty($_POST)) {
     if ($_POST['message'] !== '') {
-      $message = $db->prepare('INSERT INTO posts SET member_id')
+      $message = $db->prepare('INSERT INTO posts SET member_id=?, message=?, created=NOW()');
+      $message->execute(array(
+        $member['id'],
+        $_POST['message']
+      ));
 
+      header('Location: index.php');
+      exit();
     }
   }
+
+  $posts = $db->query('SELECT m.name, m.picture, p.*')
 ?>
 
 
