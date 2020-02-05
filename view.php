@@ -30,13 +30,15 @@
   <div id="content">
   <p>&laquo;<a href="index.php">一覧にもどる</a></p>
 
+  <?php if ($post = $posts->fetch()): ?>
     <div class="msg">
-    <img src="member_picture/" />
-    <p><span class="name">（）</span></p>
-    <p class="day"></p>
+    <img src="member_picture/<?php print(htmlspecialchars($post['picture'])); ?>" />
+    <p><?php print(htmlspecialchars($post['message'])); ?><span class="name">（<?php print(htmlspecialchars($post['name'])); ?>）</span></p>
+    <p class="day"><?php print(htmlspecialchars($post['created'])); ?></p>
     </div>
-
-	<p>その投稿は削除されたか、URLが間違えています</p>
+  <?php else: ?>
+  	<p>その投稿は削除されたか、URLが間違えています</p>
+  <?php endif; ?>
   </div>
 </div>
 </body>
