@@ -27,8 +27,24 @@
       exit();
     }
   }
+  
+  $page = $_REQUEST['page'];
+  if ($page == '') {
+    $page = 1;
+  }
+  $page = max($page, 1);
 
-  $posts = $db->query('SELECT m.name, m.picture, p.* FROM members m, posts p WHERE m.id=p.member_id ORDER BY p.created DESC');
+  $counts = $db->query('SELECT COUNT(*) AS cnt FROM posts');
+  $cnt = $counts->fetch();
+  $maxPage = ceil($cnt['cnt'] / 5);
+  $page = min($page, $maxPage);
+
+  $start = ($page - 1) * 5;
+
+  $posts = $db->prepare('SELECT m.name, m.picture, p.* FROM members m, posts p WHERE m.id=p.member_id ORDER BY p.created DESC LIMIT ?,5');
+  $posts->bindParam(1, $start, PDO::PARAM_INT);
+  $posts->execute();
+
 
   if (isset($_REQUEST['res'])) {
     // 返信の処理
